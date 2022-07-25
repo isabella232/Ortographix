@@ -22,7 +22,7 @@ You can download the source and build the web extention (see detaill in the Webe
 or dowload the last version of the extention . 
 
 The server is also avaible in exe , you can build the serveur with pyinstaller or downlod in the relaise
----
+
 ## Support 
 
 If you find a bug or have a sugestion , please oppen a issue . The support of this application is made by the community Atos have no obligation to correct or adpte the sofware.
