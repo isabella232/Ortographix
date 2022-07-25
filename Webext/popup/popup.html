@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="popup.css"/>
+    <script src="tailmwin.js"></script>
+    <script src="index.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+
+</head>
+<body>
+<ul class="nav nav-tabs flex flex-row md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4 " id="tabs-list"
+    role="tablist">
+    <li class="nav-item m-auto pl-10" role="presentation" >
+        <a href="#tabs-openai"
+           class="nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"
+           id="tabs-normal-tab" data-bs-toggle="pill" data-bs-target="#tabs-normal" role="tab" aria-controls="tabs-normal"
+           aria-selected="true">Parametre</a>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <a href="#tabs-option"
+           class="nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent "
+           id="tabs-option-tab" data-bs-toggle="pill" data-bs-target="#tabs-option" role="tab" aria-controls="tabs-option"
+           aria-selected="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+        </a>
+    </li>
+
+
+</ul>
+<div class="tab-content" id="tabs-tabContentMain">
+
+
+
+    <div class="tab-pane fade show active" id="tabs-normal" role="tabpanel" aria-labelledby="tabs-normal-tab">
+        <!-- This is a addoon popup -->
+        <div class="popup grid grid-cols-1 divide-y">
+            <div class="popup_inner text-center content-center flex">
+                <div class="popup_header text-center content-center m-auto flex items-center">
+                    <h1 class="text-3xl font-bold mt-0 mb-2 text-blue-600">Ortographix</h1>
+                    <img src="../icone/menir bleu.png" id="logo">
+                </div>
+            </div>
+
+            <div class="text-center flex justify-center flex-wrap ">
+                <div class="flex items-center justify-between w-5/6 py-4">
+                    <label for="corrector" class="font-semibold self-stretch text-left">Active corrector</label>
+                    <div class="relative inline-block w-10 mr-3 align-middle select-none transition duration-200 ease-in ">
+                        <input type="checkbox" name="corrector" checked="true" id="corrector" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer form-check"/>
+                        <label for="corrector" class="toggle-label block overflow-hidden h-6 rounded-full bg-blue-300 cursor-pointer"></label>
+                    </div>
+                </div>
+                <br>
+                <div class="flex items-center justify-between w-5/6 align-end py-1">
+                    <label for="prediction" class="font-semibold self-stretch text-left">Active prediction</label>
+                    <div class="relative inline-block w-10 mr-3 align-middle select-none transition duration-200 ease-in ">
+                        <input type="checkbox" name="prediction" checked="false" id="prediction" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer form-check"/>
+                        <label for="prediction" class="toggle-label block overflow-hidden h-6 rounded-full bg-blue-300 cursor-pointer"></label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Liste mot ignore -->
+            <div id="addWordDiv" class=" text-center py-2 ">
+                <div class="pb-2 text-center">
+                    <p> Liste des mot ignore</p>
+                </div>
+                <div class="searchBar mb-2">
+                    <label class="relative align-middle">
+                        <input type="text" id="addWord" placeholder="Ajoute un mot" class="align-end  appearance-none border-2 border-blue-400 rounded  py-1 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+                        <button class=" w-7 h-11 absolute top-1/2 transform -translate-y-1/2 right-3 flex" id="buttonAddWord"><p class="flex-auto text-3xl text-blue-500">+</p></button>
+                    </label>
+                </div>
+                <div>
+                    <ul id="listWord" class="list-reset flex flex-wrap ">
+
+                    </ul>
+                </div>
+            </div>
+
+            <br>
+
+        </div>
+    </div>
+    <!--- OPTION -->
+
+    <div class="tab-pane fade show " id="tabs-option" role="tabpanel" aria-labelledby="tabs-Option-tab">
+        <!--Liste adresse du serveur -->
+        <div class="mb-2 text-center flex justify-center flex-wrap py-2 pl-5">
+            <div class="md:w-1/3">
+                <label class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between" for="serverip">
+                    Server adresse
+                </label>
+            </div>
+            <div class="w-2/3 align-end justify-between">
+                <input class="align-end bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-1 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                       id="serverip"  type="text" value="https://api.languagetoolplus.com" placeholder="ip server">
+            </div>
+        </div>
+
+        <!-- TAB -->
+        <div>
+            <h2 class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between text-center"> Selection du moteur de completion </h2>
+            <ul class="nav nav-tabs flex flex-row md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4 justify-center" id="tabs-tab"
+                role="tablist">
+                <li class="nav-item chose_completor" role="presentation">
+                    <a href="#tabs-openai"
+                       class="tab_name nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"
+                       id="tabs-openai-tab" data-bs-toggle="pill" data-bs-target="#tabs-openai" role="tab" aria-controls="tabs-openai"
+                       aria-selected="true">Open ai</a>
+                </li>
+
+                <li class="nav-item chose_completor" role="presentation">
+                    <a href="#tabs-other"
+                       class="tab_name nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent "
+                       id="tabs-other-tab" data-bs-toggle="pill" data-bs-target="#tabs-other" role="tab" aria-controls="tabs-other"
+                       aria-selected="true">Other</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content mx-2" id="tabs-tabContent">
+                <div class="tab-pane fade show active corrector_tab_pan" id="tabs-openai" role="tabpanel" aria-labelledby="tabs-openai-tab">
+                    <p class="text-center text-slate-500">
+                        Vous avez selection le moteur de correction uttilisant l'inteligence artifille d'open ai "Davinci" .
+
+                    </p>
+
+
+                    <div class="mb-2 text-center flex justify-center flex-wrap py-2 pl-5">
+                        <div class="md:w-1/3">
+                            <label class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between" for="serverip">
+                                Clef d'api
+                            </label>
+                        </div>
+                        <br>
+                        <div class="w-2/3 align-end justify-between">
+                            <input class="align-end bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-1 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                   id="openaikey"  type="password" value="" placeholder="clef d'api">
+                        </div>
+                    </div>
+                    <br>
+                    <p class="my-4 text-center text-warp text-red-500 font-semibold ">
+                        Pour uttilise cette derniere vous devez diposer <br> d'une clef d'api valide
+                    </p>
+
+                    <p class="text-center text-slate-500" >
+                        Pour en savoir plus ou recuper votre clef cliquer <a href="https://beta.openai.com/account/api-keys" class="text-blue-500"> ici </a>
+                    </p>
+
+                </div>
+
+
+                <div class="tab-pane fade corrector_tab_pan" id="tabs-other" role="tabpanel" aria-labelledby="tabs-other-tab">
+                    <p class=" text-slate-500">
+                        Vous avez choisis d'uttilise le correcteur de completion automatiue par defaut , verifie que vous avez bien lance le serveur local
+                        ou que vous etes connecte a un serveur proposant le modulle de completion automatique .
+                        <br>
+                        <br>
+                        Plus d'information <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-blue-500"> ici </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="popup.js"></script>
+
+
+</body>
+</html>
