@@ -20,12 +20,17 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
-      - uses: pocket-apps/action-update-version@v1
+      - name: "Update file version"
+        run: |
+          sed -r 's/(.*)("version": "[0-9]+.)([0-9]+)(.*)/echo "\1\2$((\3+1))\4"/ge' Webext/manifest.json >> Webext/manifest.json
+          git add ./Webext/manifest.json
+          git commit -m "CI update version number [skip actions]"
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
         with:
-            files: 'Webext/manifest.json'
-            version-regexp: '\d+.\d+'
-            repo-token: ${{ secrets.GITHUB_TOKEN }}
-            commit-message: ci update version to v%version% [skip actions]
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+        
       - name: "Checkout"
         uses: actions/checkout@v1
 
