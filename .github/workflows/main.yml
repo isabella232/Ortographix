@@ -60,3 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: ${{ steps.web-ext-sign.outputs.target }}
+          name: "last"
+          tag_name: "last"
+          
