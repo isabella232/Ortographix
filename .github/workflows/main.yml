@@ -25,7 +25,7 @@ jobs:
             files: 'Webext/manifest.json'
             version-regexp: '\d+.\d+'
             repo-token: ${{ secrets.GITHUB_TOKEN }}
-            commit-message:"ci: update version to v%version% [skip actions]"
+            commit-message: ci update version to v%version% [skip actions]
       - name: "Checkout"
         uses: actions/checkout@v1
 
