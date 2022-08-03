@@ -20,11 +20,15 @@ class GeneriqueHTMLEllement{
     }
 
     get isAtEnd(){
-return true
+        return true
     }
 
-addCompletion(completion){
-    console.log("addCompletion Generic")
-    this.htmlEllement.value = completion
-}
+    addCompletion(completion){
+        console.log("addCompletion Generic")
+        this.htmlEllement.value = completion
+    }
+
+    fucus(){
+        this.htmlEllement.focus();
+    }
 }

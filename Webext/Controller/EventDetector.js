@@ -275,7 +275,7 @@ function findEditedEllement(ellement,key){
     let prevEllmentStat = ellementDict[cssPath(ellement)]
     console.log("findEditedEllement cssPath",cssPath(ellement)," ----- ",ellementDict," --",ellement)
     console.log("findEditedEllement prevEllmentStat",prevEllmentStat)
-    console.log("findEditedEllement selection start",ellement.selectionStart,EditableHtmlEllement.getCaretPosition(),prevEllmentStat.isAtTheEnd())
+    //console.log("findEditedEllement selection start",ellement.selectionStart,EditableHtmlEllement.getCaretPosition(),prevEllmentStat.isAtTheEnd())
     return ;
 
     //let prevEllmentStat = ellementDict[cssPath(ellement)]
@@ -351,7 +351,9 @@ function checkIfTabIsPress(key,htmlEllement){
     return key === "Tab" && haveTextProposition;
 }
 
-
+document.addEventListener('selectionchange', (event) => {
+    console.log("selection change",document.getSelection(),event);
+});
 
 document.addEventListener('click', function(event) {
     console.log("click",event.target)

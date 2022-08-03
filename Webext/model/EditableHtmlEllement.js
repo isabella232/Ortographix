@@ -3,6 +3,7 @@
 
 class EditableHtmlEllement extends GeneriqueHTMLEllement{
     savedRange;
+    singleton_ellment;
     constructor(htmlEllement) {
         super(htmlEllement);
     }
@@ -18,24 +19,41 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
 //@TODO : Fixe le bug lorsque quil y a des ellment dans les ellement editable
     set value(text){
         let ellementInfo,start;
+        console.log("original ellment ",this.htmlEllement)
         console.log(" Carret postion ",EditableHtmlEllement.getCaretPosition())
-        if(window.getSelection)//non IE Browsers
+        this.htmlEllement.focus();
+
+        let errorWindos = false
+
+        let element = this.htmlEllement
+        var doc = element.ownerDocument || element.document;
+        var win = window
+
+        if(win.getSelection)//non IE Browsers
         {
             start = EditableHtmlEllement.getCaretPosition()
-            let temp = window.getSelection().getRangeAt(0)
+            let temp = undefined
+            try {
+
+                 temp = win.getSelection().getRangeAt(0)
+            }catch(e){
+                win = doc.defaultView || doc.parentWindow;
+                temp = win.getSelection().getRangeAt(0)
+                errorWindos = true
+            }
+
             //this.savedRange = {commonAncestorContainer:temp.commonAncestorContainer, startContainer: temp.startContainer, startOffset: temp.startOffset, endContainer: temp.endContainer, endOffset: temp.endOffset, collapsed: temp.collapsed }
             //this.savedRange = temp.cloneRange()
-            ellementInfo = this.getPathOfEllement(window.getSelection().anchorNode)
-            console.log("save range",temp,ellementInfo,window.getSelection(),start);
+            ellementInfo = this.getPathOfEllement(win.getSelection().anchorNode)
+            console.log("save range",temp,ellementInfo,win.getSelection(),start);
         }
         //this.htmlEllement.textContent = text
         //console.log("before",cursorPosition)
-        console.log(this.htmlEllement)
 
         //////////////////////////////////////
         //We applay the correction to the html ellment
         this.updateWord(text)
-       //////////////////////////////////////////
+        //////////////////////////////////////////
 
 
         console.log("after updae word")
@@ -50,6 +68,9 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
             range.collapse(true)
         }else {
             el =allSelector[0]
+        }
+        if(el ===undefined){
+            el = this.htmlEllement
         }
         let child = el.childNodes[ellementInfo.digit]
         if(child===undefined){
@@ -71,7 +92,10 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         }catch(e){
             console.log("range error",e)
             console.log("range set at end",range)
-            this.placeCaretAtEnd(child)
+            this.placeCaretAtEnd(this.htmlEllement)
+        }
+        if(errorWindos){
+            this.placeCaretAtEnd(this.htmlEllement)
         }
 
         // this.placeCaretAtEnd(this.htmlEllement.lastChild)
@@ -101,7 +125,7 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
     placeCaretAtEnd(el,curentDoc = document) {
         try {
             console.log("Place carret",el)
-            //el.focus();
+           // el.focus();
             if (typeof curentDoc.defaultView.getSelection != "undefined"
                 && typeof curentDoc.createRange != "undefined") {
                 var range = curentDoc.createRange();
@@ -136,8 +160,44 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
     }
 
 
+//Metode to find postion
+    bruteForce2(){
+        let element = this.htmlEllement
+        var doc = element.ownerDocument || element.document;
+        var win = doc.defaultView || doc.parentWindow;
+        var sel, range, preCaretRange, caretOffset = 0;
+        if (typeof win.getSelection != "undefined") {
+            sel = win.getSelection();
+            if (sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            }
+        } else if ( (sel = doc.selection) && sel.type != "Control") {
+            range = doc.selection.createRange();
+            preCaretRange = doc.body.createTextRange();
+            preCaretRange.moveToElementText(element);
+            preCaretRange.setEndPoint("EndToEnd", textRange);
+            caretOffset = preCaretTextRange.text.length;
+        }
+        console.log("Bruteforc 2 ",caretOffset)
+        return caretOffset;
+    }
+
+
     get selectionStart(){
-        return EditableHtmlEllement.getCaretPosition()
+        this.fucus()
+        EditableHtmlEllement.singleton_ellment = this.htmlEllement
+        let pos = EditableHtmlEllement.getCaretPosition()
+        if(pos ===-1){
+
+            pos = this.bruteForce2();
+            console.log(document.getSelection())
+
+        }
+        return pos
     }
 
     get selectionEnd(){
@@ -145,19 +205,22 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
     }
 
     get isAtEnd(){
-        var selectedObj = window.getSelection();
-        let curentText = selectedObj.anchorNode.textContent
-        let allText = this.text
-        //Index
-        let index = (allText.indexOf(curentText)+1)-(allText.length-curentText.length)
-        console.log("findEditedEllement index",index,curentText,"|",allText,allText.indexOf(curentText),allText.length,curentText.length,EditableHtmlEllement.getCaretPosition())
+        try {
+            var selectedObj = window.getSelection();
+            let curentText = selectedObj.anchorNode.textContent
+            let allText = this.text
+            //Index
+            let index = (allText.indexOf(curentText) + 1) - (allText.length - curentText.length)
+            console.log("findEditedEllement index", index, curentText, "|", allText, allText.indexOf(curentText), allText.length, curentText.length, EditableHtmlEllement.getCaretPosition())
 
-        //if the index is up to 0 we are in the last section (in the case of mulplte htlm ellment in the dom)
-        if((allText.indexOf(curentText)+1) >= (allText.length-curentText.length)){
+            //if the index is up to 0 we are in the last section (in the case of mulplte htlm ellment in the dom)
+            if ((allText.indexOf(curentText) + 1) >= (allText.length - curentText.length)) {
 
-            return EditableHtmlEllement.getCaretPosition() >= curentText.length
+                return EditableHtmlEllement.getCaretPosition() >= curentText.length
+            }
+        }catch(e){
+            console.log(e)
         }
-
         return false
 
     }
@@ -281,6 +344,17 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
 
     getDOMEllmentAtCarretPos(){
         var node = document.getSelection().anchorNode;
+
+        if (node==null){
+            let element = this.htmlEllement
+            var doc = element.ownerDocument || element.document;
+            var win = doc.defaultView || doc.parentWindow;
+            node = win.getSelection().anchorNode;
+            if(node == null){
+                node = this.htmlEllement
+            }
+        }
+
         return (node.nodeType == 3 ? node.parentNode : node);
     }
 
@@ -304,24 +378,30 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         return {"path":str,"digit":digit};
     }
 
-    static getCaretPosition() {
-        if (window.getSelection && window.getSelection().getRangeAt) {
-            var range = window.getSelection().getRangeAt(0);
-            var selectedObj = window.getSelection();
-            var rangeCount = 0;
-            var childNodes = selectedObj.anchorNode.parentNode.childNodes;
-            for (var i = 0; i < childNodes.length; i++) {
-                if (childNodes[i] == selectedObj.anchorNode) {
-                    break;
+
+    static getCaretPosition(selection=window.getSelection()) {
+        try {
+            if (selection && selection.getRangeAt) {
+                var range = selection.getRangeAt(0);
+                var selectedObj = selection;
+                var rangeCount = 0;
+                var childNodes = selectedObj.anchorNode.parentNode.childNodes;
+                for (var i = 0; i < childNodes.length; i++) {
+                    if (childNodes[i] == selectedObj.anchorNode) {
+                        break;
+                    }
+                    if (childNodes[i].outerHTML)
+                        rangeCount += childNodes[i].outerHTML.length;
+                    else if (childNodes[i].nodeType == 3) {
+                        rangeCount += childNodes[i].textContent.length;
+                    }
                 }
-                if (childNodes[i].outerHTML)
-                    rangeCount += childNodes[i].outerHTML.length;
-                else if (childNodes[i].nodeType == 3) {
-                    rangeCount += childNodes[i].textContent.length;
-                }
+                return range.startOffset + rangeCount;
+                //return range.startOffset;
             }
-            return range.startOffset + rangeCount;
-            return range.startOffset ;
+        }catch (e){
+            console.log(e)
+            console.log("Selection for the error ",window.getSelection())
         }
         return -1;
     }

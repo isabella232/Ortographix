@@ -140,8 +140,8 @@ if(browser !== undefined) {
 //action use on load , the main idea is to set the default value for the key
 function forLoad(result){
     console.log("onload", result);
-    result["corrector"] !== undefined ? activate = result["corrector"] : activate = true;
-    result["prediction"] !== undefined ? prediction = result["prediction"] : prediction = true;
+    result["corrector"] !== undefined ? activate = result["corrector"] : activate = activate;
+    result["prediction"] !== undefined ? prediction = result["prediction"] : prediction = prediction;
     result["serverip"] !== undefined ? ip = result["serverip"] : ip = "https://api.languagetoolplus.com";
     result["wordList"] !== undefined ? nonEditableWord = result["wordList"] : nonEditableWord = {};
     result["openaikey"] !== undefined ? gpt_key = result["openaikey"] : gpt_key= "";

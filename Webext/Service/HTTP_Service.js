@@ -61,8 +61,12 @@ function getCorectionHTTPRequest(element, text){
                 }
                 RequestIsEnd = true;
             } )
-            .catch(error => {console.log('Error:', error)
-                console.log(error)});
+            .catch(error => {
+                console.log('Error:', error)
+                console.log(error.stack)
+
+                RequestIsEnd = true;
+            });
 
         /*
 
@@ -147,7 +151,10 @@ function getCompletionHTTPRequest(element, text){
                 completion(text,response.choices[0].text,element)
                 RequestIsEnd = true;
             } )
-            .catch(error => console.log('Error:', error,error.body,error.stack));
+            .catch(error => {
+                console.log('Error:', error,error.body,error.stack)
+                RequestIsEnd = true;
+            });
 
         /*
 
