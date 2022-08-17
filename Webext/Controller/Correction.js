@@ -334,15 +334,9 @@ function chooseProposition(match,wordWithOffet){
     let replacements = match.replacements;
     let close = replacements[0].value;
     let minDist = levenshteinDistance(word.toLowerCase(),close.toLowerCase())
-    if(word=="pdf"){
-        console.log(close,minDist)
-    }
     for(let i =1;i<replacements.length;i++){
 
         let levDistance = levenshteinDistance(word.toLowerCase(),replacements[i].value.toLowerCase());
-        if(word=="pdf"){
-            console.log(replacements[i].value,levDistance)
-        }
 
         if(levDistance<minDist){
             close = replacements[i].value;

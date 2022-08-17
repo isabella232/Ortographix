@@ -336,7 +336,7 @@ function findEditedEllement(ellement,key){
 }
 
 function checkIfWeClickOutSide(clickedEllement){
-    removeAllCompletion();
+    removeAllCompletion(clickedEllement);
 }
 
 

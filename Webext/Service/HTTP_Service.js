@@ -11,7 +11,8 @@ function getCorectionHTTPRequest(element, text){
         console.log("Convert text to down",element)
         let body  = {
             language: "fr",
-            text: text
+            text: text,
+            disabledRules:"WHITESPACE_RULE,ESPACE_APRES_POINT"
         }
         ip=ip.trim();
         let dowArray = this.convertDOMtoJSON(text);

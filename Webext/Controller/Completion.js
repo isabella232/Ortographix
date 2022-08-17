@@ -1,7 +1,9 @@
 function completion(originalText,newText,ellement){
  //Get the text without the last html ellement with a regex
  let regex = /(<[^>]*>)*\s?$/m;
- let oldText = originalText.replace(regex, '').trim();
+
+
+ let oldText = originalText.replace(regex, '').replace("<br>").replace("&nbsp;",'').trim();
  console.log("oldText",oldText)
  console.log("newText",newText)
  let tmp = newText.replace(oldText,'')
@@ -38,7 +40,7 @@ function applycompletion(ellement){
  ellement.placeCaretAtEnd(ellement.htmlEllement)
 }
 
-function removeAllCompletion(){
+function removeAllCompletion(ellement){
  console.log("Remove completion")
  let allCompletion = document.getElementsByClassName("textPropostion")
  //for each completion remove the <span> and </span> and only keep the thexe who add to parent
@@ -46,7 +48,7 @@ function removeAllCompletion(){
   allCompletion[i].parentNode.removeChild(allCompletion[i])
 
  }
- console.log("ellement.htmlEllement",ellement.htmlEllement)
+// console.log("ellement.htmlEllement",ellement.htmlEllement)
  ellement.placeCaretAtEnd(ellement.htmlEllement)
 }
 
@@ -56,7 +58,7 @@ function removeStartText(ellement,addedLetter){
  let allCompletion = ellement.htmlEllement.parentElement.getElementsByClassName("textPropostion")
  if(allCompletion.length > 0){
   let proposal = allCompletion[0]
-  let proposalText = proposal.textContent.replace("\n","").replace("\t","").replace("\r","")
+  let proposalText = proposal.textContent.replace("\n","").replace("\t","").replace("\r","").trim()
   //get the prvious child
   let previousChild = proposal.previousSibling
   //get the text of the previous child
@@ -64,7 +66,7 @@ function removeStartText(ellement,addedLetter){
   //check if the end of the previousChildText is the start of the proposalText
 
   if(proposalText.trim().length ===0){
-   removeAllCompletion()
+   removeAllCompletion(ellement)
    return true;
   }
   let commonPart = endOfTextIsTheStartOfNewText(previousChildText,proposalText)
@@ -79,43 +81,52 @@ function removeStartText(ellement,addedLetter){
 
    proposal.innerHTML = proposal.innerHTML.replace(regex,"")
 
-   if(proposal.textContent.trim().length ===0){
-    removeAllCompletion()
+   if((proposal.textContent.trim().length ===0 || commonPart.trim().length===0)&&addedLetter!==" "){
+    removeAllCompletion(ellement)
    }
    return true
+  }else if(addedLetter!==" "){
+   console.log("No commonPart")
+   removeAllCompletion(ellement)
   }
 
  }
  return false
 }
 
+/*
+If the end of the fist text is the start of the second text send the common part
+In other case send undefined
+ */
 function endOfTextIsTheStartOfNewText(endText,startText){
- console.log("endOfTextIsTheStartOfNewText",endText," | ",startText)
- let subText = startText[0]
+ endText = endText.trim()
+ startText = startText.trim()
  let i =0;
- while(i<startText.length){
-  //if subtext is in previousChildText
-  if(endText.lastIndexOf(subText) !== -1){
-   i++;
-   subText += startText[i]
-  }else {
-   //if we not find the subtext in the previousChildText we stop
-   break;
+ let size = endText.length
+ let find = false
+ //while we have not found the end of the text
+ while(i<endText.length&&i<startText.length){
+  //we get the end of the text and check is is the start of the 2nd
+  let subText = endText.substring(size-i-1,size)
+  let isEnd = startText.startsWith(subText)
+  //if we found is the case
+  if(isEnd){
+   find = true
   }
-
+  //if prevoulis we have found the a end of texe who match par and not is not match => we have found the common part only
+  if(!isEnd && find){
+   break
+  }
+  i++
  }
 
- let commonPart = subText.substring(0,i)
- console.log("commonPart",commonPart)
- //last index of the commonPart
- let isEnd = endText.trim().lastIndexOf(commonPart.trim())+commonPart.trim().length === endText.trim().length
- console.log("isEnd",isEnd,endText.trim().length, " - ",commonPart.trim().length, "index of ",endText.trim().lastIndexOf(commonPart.trim()),"all length",endText.trim().lastIndexOf(commonPart.trim())+commonPart.trim().length ,"end length ",endText.trim().length)
- if(isEnd){
-  return commonPart
+ if(find){
+   return endText.substring(size-i,size)
  }
- return undefined;
+ return undefined
 
 }
+
 //Check if we need to requete au autocompletion for the ellement
 function needAutoCompletion(ellement){
  return ellement instanceof EditableHtmlEllement && ellement.htmlEllement.parentElement.getElementsByClassName("textPropostion").length ===0

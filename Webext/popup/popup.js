@@ -4,6 +4,7 @@ var dataToSend = {"name":"test","isChecked":false};
 var optionHide = true
 
 console.log("Load popup js")
+var lastResult = undefined
 
 //If we not set with this way the browserd send a exeption
 try{
@@ -41,7 +42,7 @@ function onLoad(){
     if(browser != undefined) {
         browser.storage.sync.get().then((result) => {
             console.log("onload", result);
-
+            lastResult = result
             //for each key in result, set the value of the corresponding input field
             for (var key in result) {
                 console.log("key", key, "value", result[key]);
@@ -150,6 +151,7 @@ function editLocalStorage(key,value){
 
     if(browser != undefined) {
         browser.storage.sync.get().then((result) => {
+            lastResult = result
             result[key] = value;
             console.log("result", result)
             browser.storage.sync.set(result);
@@ -158,6 +160,7 @@ function editLocalStorage(key,value){
     }else{
 
         chrome.storage.sync.get(null, function(result) {
+            lastResult = result
             result[key] = value;
             console.log("result", result)
             chrome.storage.sync.set(result, function(){
@@ -326,9 +329,9 @@ function updateWordList(wordlist){
         button.addEventListener("click",function(){
             if(browser!=undefined) {
                 //remove the word from the list
-                delete result.wordList[word];
+                delete lastResult.wordList[word];
                 //save the new list
-                browser.storage.sync.set({"wordList": result.wordList});
+                browser.storage.sync.set({"wordList": lastResult.wordList});
             }
             //remove the word from the list
             this.parentNode.remove();

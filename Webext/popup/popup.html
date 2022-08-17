@@ -18,7 +18,7 @@
         <a href="#tabs-openai"
            class="nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"
            id="tabs-normal-tab" data-bs-toggle="pill" data-bs-target="#tabs-normal" role="tab" aria-controls="tabs-normal"
-           aria-selected="true">Parametre</a>
+           aria-selected="true">Paramètre</a>
     </li>
 
     <li class="nav-item" role="presentation">
@@ -48,7 +48,7 @@
 
             <div class="text-center flex justify-center flex-wrap ">
                 <div class="flex items-center justify-between w-5/6 py-4">
-                    <label for="corrector" class="font-semibold self-stretch text-left">Active corrector</label>
+                    <label for="corrector" class="font-semibold self-stretch text-left">Activé correcteur</label>
                     <div class="relative inline-block w-10 mr-3 align-middle select-none transition duration-200 ease-in ">
                         <input type="checkbox" name="corrector" checked="true" id="corrector" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer form-check"/>
                         <label for="corrector" class="toggle-label block overflow-hidden h-6 rounded-full bg-blue-300 cursor-pointer"></label>
@@ -56,7 +56,7 @@
                 </div>
                 <br>
                 <div class="flex items-center justify-between w-5/6 align-end py-1">
-                    <label for="prediction" class="font-semibold self-stretch text-left">Active prediction</label>
+                    <label for="prediction" class="font-semibold self-stretch text-left">Activées prédictions</label>
                     <div class="relative inline-block w-10 mr-3 align-middle select-none transition duration-200 ease-in ">
                         <input type="checkbox" name="prediction" checked="false" id="prediction" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer form-check"/>
                         <label for="prediction" class="toggle-label block overflow-hidden h-6 rounded-full bg-blue-300 cursor-pointer"></label>
@@ -68,7 +68,7 @@
             <!--Liste mot ignore -->
             <div id="addWordDiv" class=" text-center py-2 ">
                 <div class="pb-2 text-center">
-                    <p> Liste des mot ignore</p>
+                    <p> Liste des mots ignorés</p>
                 </div>
                 <div class="searchBar mb-2">
                     <label class="relative align-middle">
@@ -94,7 +94,7 @@
         <div class="mb-2 text-center flex justify-center flex-wrap py-2 pl-5">
             <div class="md:w-1/3">
                 <label class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between" for="serverip">
-                    Server adresse
+                    Adresse du Serveur
                 </label>
             </div>
             <div class="w-2/3 align-end justify-between">
@@ -105,7 +105,8 @@
 
         <!-- TAB -->
         <div>
-            <h2 class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between text-center"> Selection du moteur de completion </h2>
+            <h2 class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between text-center"> Sélection du moteur de complétion
+            </h2>
             <ul class="nav nav-tabs flex flex-row md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4 justify-center" id="tabs-tab"
                 role="tablist">
                 <li class="nav-item chose_completor" role="presentation">
@@ -119,7 +120,7 @@
                     <a href="#tabs-other"
                        class="tab_name nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent "
                        id="tabs-other-tab" data-bs-toggle="pill" data-bs-target="#tabs-other" role="tab" aria-controls="tabs-other"
-                       aria-selected="true">Other</a>
+                       aria-selected="true">Autre</a>
                 </li>
 
 
@@ -127,7 +128,7 @@
             <div class="tab-content mx-2" id="tabs-tabContent">
                 <div class="tab-pane fade show active corrector_tab_pan" id="tabs-openai" role="tabpanel" aria-labelledby="tabs-openai-tab">
                     <p class="text-center text-slate-500">
-                        Vous avez selection le moteur de correction uttilisant l'inteligence artifille d'open ai "Davinci" .
+                        Vous avez sélectionné le moteur de correction utilisant l'intelligence artificielle d'open ai "Davinci" .
 
                     </p>
 
@@ -135,7 +136,7 @@
                     <div class="mb-2 text-center flex justify-center flex-wrap py-2 pl-5">
                         <div class="md:w-1/3">
                             <label class="font-semibold self-stretch md:text-right mb-1 md:mb-0 pr-4 py-1 justify-between" for="serverip">
-                                Clef d'api
+                                Clef API
                             </label>
                         </div>
                         <br>
@@ -146,11 +147,11 @@
                     </div>
                     <br>
                     <p class="my-4 text-center text-warp text-red-500 font-semibold ">
-                        Pour uttilise cette derniere vous devez diposer <br> d'une clef d'api valide
+                        Pour utiliser cette dernière, vous devez disposer <br> d'une clef d'api valide
                     </p>
 
                     <p class="text-center text-slate-500" >
-                        Pour en savoir plus ou recuper votre clef cliquer <a href="https://beta.openai.com/account/api-keys" class="text-blue-500"> ici </a>
+                        Pour en savoir plus ou récupérer votre clef cliqué <a href="https://beta.openai.com/account/api-keys" class="text-blue-500"> ici </a>
                     </p>
 
                 </div>
@@ -158,8 +159,9 @@
 
                 <div class="tab-pane fade corrector_tab_pan" id="tabs-other" role="tabpanel" aria-labelledby="tabs-other-tab">
                     <p class=" text-slate-500">
-                        Vous avez choisis d'uttilise le correcteur de completion automatiue par defaut , verifie que vous avez bien lance le serveur local
-                        ou que vous etes connecte a un serveur proposant le modulle de completion automatique .
+                        Vous avez choisi d'utiliser le correcteur de complétion automatique par défaut, vérifier que vous avez bien lancé le serveur local
+                        ou que vous êtes connecté à un serveur proposant le module de complétion automatique.
+
                         <br>
                         <br>
                         Plus d'information <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-blue-500"> ici </a>

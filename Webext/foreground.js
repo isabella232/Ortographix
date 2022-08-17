@@ -38,8 +38,8 @@ var areas = document.querySelectorAll('*');
 
 console.log("areas",areas)
 var RequestIsEnd = true;
-const duration = 1000;
-const minDelayInSeconds = 1;
+const duration = 3000;
+const minDelayInSeconds = 3;
 var lastUpdate = Date.now();
 var previousUpdate = Date.now();
 var activate = true;
@@ -152,7 +152,28 @@ function forLoad(result){
 
 /////////////////TEST////////////////////////////////////////////////////////////
 console.log("==== TEST ====")
-let startTest ="j'ai manger des pommes j'ai"
-let endTest ="j'ai bu de l'eau"
+let startTest ="j'ai manger des pommes  etd"
+let endTest ="des poires"
 let resss =endOfTextIsTheStartOfNewText(startTest,endTest)
 console.log("resss",resss)
+
+ startTest ="aaaab"
+ endTest ="aab"
+ resss =endOfTextIsTheStartOfNewText(startTest,endTest)
+console.log("resss",resss)
+
+startTest ="1234"
+endTest =" 234"
+resss =endOfTextIsTheStartOfNewText(startTest,endTest)
+console.log("resss",resss)
+
+startTest ="1234"
+endTest ="1234"
+resss =endOfTextIsTheStartOfNewText(startTest,endTest)
+console.log("resss",resss)
+
+startTest ="12345"
+endTest ="1234"
+resss =endOfTextIsTheStartOfNewText(startTest,endTest)
+console.log("resss",resss)
+
