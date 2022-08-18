@@ -49,7 +49,10 @@ function removeAllCompletion(ellement){
 
  }
 // console.log("ellement.htmlEllement",ellement.htmlEllement)
- ellement.placeCaretAtEnd(ellement.htmlEllement)
+ if(ellement.placeCaretAtEnd!==undefined){
+  ellement.placeCaretAtEnd(ellement.htmlEllement)
+ }
+
 }
 
 //If the user type a text and this text is in the textproposition we remove the start text to the proposal and let the rest of the text be the proposal

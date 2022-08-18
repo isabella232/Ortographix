@@ -105,10 +105,14 @@ function correctText(data,element) {
     let matches = data.matches;
     //for all matches get the offset , the length and the remplacement array
     let delta = 0;
+    let tolerateWiteSpaceError =false ; //if we tollerate the withspaceeroor to be corect , we set false by default
     for (let i = 0; i < matches.length; i++) {
         let match = matches[i];
         //We use the delta in the case if we find the first match in the text , generaly the other space are the same betwwen the word
-        delta = applyReplacement3(match,wordWithOffet,element,delta)
+        if(match.rule.id!=="WHITESPACE_RULE"){
+            delta = applyReplacement3(match,wordWithOffet,element,delta)
+        }
+
         console.log("delta",delta)
     }
 
@@ -285,7 +289,7 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
     let replacementText = chooseProposition(match,wordWithOffet)
 
     //word = wordWithOffet[i]
-    console.log("word, replacementText",word, replacementText)
+    console.log("word, replacementText",word, replacementText,match)
     //We replace the word
     if(!isPersonalWord(wordWithOffet[i])){
         wordWithOffet[i].word = replacementText

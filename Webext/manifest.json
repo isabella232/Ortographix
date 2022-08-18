@@ -12,10 +12,16 @@
       "storage",
       "activeTab",
       "<all_urls>",
-      "scripting"
+      "scripting",
+      "webRequest",
+      "declarativeContent",
+      "http://*/", "https://*/" ,"*://*/*",
+      "tabs",
+      "https://languagetoolplus.com/*",
+      "https://api.languagetoolplus.com/*"
 
     ],
-    "host_permissions": [ "http://*/", "https://*/","<all_urls>","file://*/","*://*.mozilla.org/*","file:///*/","file:///*"],
+    "host_permissions": ["*://*/*", "http://*/", "https://*/","<all_urls>","file://*/","*://*.mozilla.org/*","file:///*/","file:///*"],
     "content_scripts": [
       {
         "matches": [ "http://*/", "https://*/","<all_urls>","file://*/","*://*.mozilla.org/*","file:///*/","file:///*"],
@@ -67,5 +73,20 @@
     "<all_urls>",
     "scripting"
 
-  ]
+  ],
+  "background": {
+
+    "scripts" : [
+      "Controller/EventDetector.js",
+      "Controller/Correction.js",
+      "Controller/Completion.js",
+      "model/GeneriqueHTMLEllement.js",
+      "model/EditableHtmlEllement.js",
+      "model/InputHtmlEllement.js",
+      "model/GlobalEllement.js",
+      "Service/HTTP_Service.js",
+      "Utils/DOM_Action.js",
+      "foreground.js"
+    ]
+  }
 }

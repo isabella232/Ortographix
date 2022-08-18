@@ -35,7 +35,7 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
             let temp = undefined
             try {
 
-                 temp = win.getSelection().getRangeAt(0)
+                temp = win.getSelection().getRangeAt(0)
             }catch(e){
                 win = doc.defaultView || doc.parentWindow;
                 temp = win.getSelection().getRangeAt(0)
@@ -51,7 +51,7 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         //console.log("before",cursorPosition)
 
         //////////////////////////////////////
-        //We applay the correction to the html ellment
+        //We apply the correction to the html ellment
         this.updateWord(text)
         //////////////////////////////////////////
 
@@ -125,7 +125,7 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
     placeCaretAtEnd(el,curentDoc = document) {
         try {
             console.log("Place carret",el)
-           // el.focus();
+            // el.focus();
             if (typeof curentDoc.defaultView.getSelection != "undefined"
                 && typeof curentDoc.createRange != "undefined") {
                 var range = curentDoc.createRange();
@@ -251,10 +251,12 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         this.htmlEllement.innerHTML = text;
     }
     updateWord(wordWithOffet){
+        console.log("too")
         console.log("repalce text ","original : ",this.htmlEllement.innerHTML," new : ",wordWithOffet,"type",typeof wordWithOffet)
         let regex = /<.*>/gm;
         if(wordWithOffet instanceof String || typeof wordWithOffet === 'string') {
-            this.htmlEllement.innerHTML = wordWithOffet;
+
+           this.recursiveReplace(wordWithOffet)
             return;
         }
         let text ="";
@@ -268,12 +270,38 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
             }
         }
         console.log("before replacement",text)
-        this.htmlEllement.innerHTML = text;
+
+
+        this.recursiveReplace(text)
 
         //We use replace instead = to fixe a bug about the carry
         //this.htmlEllement.innerHTML.replace(this.htmlEllement.innerHTML,text) ;
 
         console.log("new text ",text)
+    }
+/*
+Recursive function to set the text . We use this metode to avoid the lost of the event bind to the dom ellement
+ */
+    recursiveReplace(text){
+        var doc= document.createElement('div');
+        doc.innerHTML= text;
+        console.log("In the recusive replace",text,this.htmlEllement,doc)
+        this.recursiveReplace_worker(this.htmlEllement,doc)
+    }
+
+    recursiveReplace_worker(original, newObject){
+        console.log("recusive worker",original, newObject)
+        if(original === undefined ||   newObject===undefined){
+            console.log("recusive worker ERROR",original, newObject)
+            return;
+        }
+        if(original.nodeType  === 3){
+            console.log("recusive replace",original,newObject)
+            original.nodeValue = newObject.nodeValue
+        }
+        for(let i=0;i<original.childNodes.length;i++){
+            this.recursiveReplace_worker(original.childNodes[i],newObject.childNodes[i])
+        }
     }
 
     replaceAt (start,text, replacement) {
