@@ -256,7 +256,7 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         let regex = /<.*>/gm;
         if(wordWithOffet instanceof String || typeof wordWithOffet === 'string') {
 
-           this.recursiveReplace(wordWithOffet)
+            this.recursiveReplace(wordWithOffet)
             return;
         }
         let text ="";
@@ -279,9 +279,9 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
 
         console.log("new text ",text)
     }
-/*
-Recursive function to set the text . We use this metode to avoid the lost of the event bind to the dom ellement
- */
+    /*
+    Recursive function to set the text . We use this metode to avoid the lost of the event bind to the dom ellement
+     */
     recursiveReplace(text){
         var doc= document.createElement('div');
         doc.innerHTML= text;
@@ -297,8 +297,92 @@ Recursive function to set the text . We use this metode to avoid the lost of the
         }
         if(original.nodeType  === 3){
             console.log("recusive replace",original,newObject)
-            original.nodeValue = newObject.nodeValue
+            //   original.nodeValue = newObject.nodeValue
+
+            if(original.parentNode!==undefined && newObject.parentNode!==undefined){
+                console.log("Set the html",newObject.parentNode.innerHTML,[newObject.parentNode])
+                console.log(newObject.parentNode.execCommand)
+                //   original.parentNode.textContent = newObject.parentNode.textContent
+                original.textContent = newObject.textContent
+            }else{
+                original.nodeValue = newObject.nodeValue
+            }
+
+
+            /*
+            if(chrome !=null) {
+
+               let deleteEvent = new InputEvent("beforeinput",{
+                    bubbles: true,
+                    cancelable: true,
+                    inputType: "deleteContent"
+                });
+                original.dispatchEvent(deleteEvent);
+                console.log(deleteEvent)
+                document.execCommand("delete", false)
+
+
+            //We Use the clibord envent to paste this metode is to ensure that event can be trigger (this is usfull in somme app like discord)
+                let clibordEvt
+                (clibordEvt = new ClipboardEvent("paste",{
+                    clipboardData: new DataTransfer,
+                    cancelable: !0,
+                    bubbles: !0
+                }),
+                    clibordEvt.clipboardData.setData("text/plain", newObject.nodeValue),
+                undefined && clibordEvt.clipboardData.setData("text/html", undefined));
+                let a = original.dispatchEvent(clibordEvt);
+                console.log("a is ",a)
+                //if the action is not execute a is true , so we use the old metode to apply the chagne
+                if(!a){
+                    if(original.parentNode!==undefined && newObject.parentNode!==undefined){
+                        console.log("Set the html",newObject.parentNode.innerHTML,[newObject.parentNode])
+                        console.log(newObject.parentNode.execCommand)
+                        //   original.parentNode.textContent = newObject.parentNode.textContent
+                        original.textContent = newObject.textContent
+                    }else{
+                        original.nodeValue = newObject.nodeValue
+                    }
+
+                }
+
+
+
+            }else {
+
+                let deleteEvent = new InputEvent("beforeinput",{
+                    bubbles: true,
+                    cancelable: true,
+                    inputType: "deleteContent"
+                });
+                original.dispatchEvent(deleteEvent);
+
+                let clipEvent   =  new ClipboardEvent("paste",{
+                    bubbles: !0,
+                    cancelable: !0,
+                    data: newObject.nodeValue,
+                    dataType: "text/plain"
+                })
+
+                let isDispatch = original.dispatchEvent(clipEvent)
+                console.log("is dispatch firefox", isDispatch)
+
+                let r = new InputEvent("beforeinput", {
+                    data: newObject.nodeValue,
+                    inputType: "insertFromPaste",
+                    cancelable: !0,
+                    bubbles: !0,
+                });
+                console.log(r)
+                r.dataTransfer.setData("text/plain", newObject.nodeValue)
+                isDispatch = original.dispatchEvent(r)
+                console.log("is dispatch", isDispatch)
+            }
+
+             */
         }
+
+
         for(let i=0;i<original.childNodes.length;i++){
             this.recursiveReplace_worker(original.childNodes[i],newObject.childNodes[i])
         }
