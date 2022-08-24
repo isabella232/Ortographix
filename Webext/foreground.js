@@ -38,8 +38,8 @@ var areas = document.querySelectorAll('*');
 
 console.log("areas",areas)
 var RequestIsEnd = true;
-const duration = 3000;
-const minDelayInSeconds = 3;
+const duration = 1000;
+const minDelayInSeconds = 1;
 var lastUpdate = Date.now();
 var previousUpdate = Date.now();
 var activate = true;

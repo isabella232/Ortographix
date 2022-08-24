@@ -274,16 +274,30 @@ function addWord(){
     //Clear the input field
     document.getElementById("addWord").value = "";
     //Add the word to the list of words
-    browser.storage.sync.get("wordList").then((result) => {
-        console.log("result",result)
-        if(result.wordList===undefined  ){
-            result.wordList = {};
-        }
-        //add to the dict
-        result.wordList[word] = true;
-        browser.storage.sync.set({"wordList":result.wordList});
-        addWordToList();
-    });
+    if(browser!=undefined) {
+        browser.storage.sync.get("wordList").then((result) => {
+            console.log("result", result)
+            if (result.wordList === undefined) {
+                result.wordList = {};
+            }
+            //add to the dict
+            result.wordList[word] = true;
+            browser.storage.sync.set({"wordList": result.wordList});
+            addWordToList();
+        });
+    }else{
+
+        chrome.storage.sync.get("wordList", function(result) {
+            if (result.wordList === undefined) {
+                result.wordList = {};
+            }
+            //add to the dict
+            result.wordList[word] = true;
+            chrome.storage.sync.set({"wordList": result.wordList});
+            addWordToList();
+        })
+
+    }
 }
 
 function addWordToList(){
@@ -303,7 +317,8 @@ function addWordToList(){
             browser.tabs.query({currentWindow: true}).then(sendMessageFirefox)
         });
     }else{
-        chrome.storage.sync.get("wordList", ({ wordList }) => {
+        chrome.storage.sync.get("wordList", function(result) {
+            let wordList = result.wordList
             if (wordList === undefined) {
                 wordList = {};
             }
@@ -327,17 +342,21 @@ function updateWordList(wordlist){
         var button = document.createElement("button");
         button.innerText = "X";
         button.addEventListener("click",function(){
-            if(browser!=undefined) {
-                //remove the word from the list
-                delete lastResult.wordList[word];
-                //save the new list
-                browser.storage.sync.set({"wordList": lastResult.wordList});
-            }
+            //remove the word from the list
+            delete lastResult.wordList[word];
             //remove the word from the list
             this.parentNode.remove();
             dataToSend.name = "allWords";
             dataToSend.value = result.wordList;
-            browser.tabs.query({ currentWindow: true}).then(sendMessageFirefox)
+            if(browser!=undefined) {
+
+                //save the new list
+                browser.storage.sync.set({"wordList": lastResult.wordList});
+                browser.tabs.query({ currentWindow: true}).then(sendMessageFirefox)
+            }else{
+                chrome.storage.sync.set({"wordList": result.wordList});
+                sendMessageChrome()
+            }
         });
         li.appendChild(p);
         li.appendChild(button);

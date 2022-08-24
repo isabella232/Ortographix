@@ -19,24 +19,34 @@ function convertDOMtoJSONWorker(htmlEllement,annotations){
         if(ellement.nodeName !== "#text"){
             let text = ellement.innerText;
             let markup = ellement.tagName;
+            if(markup===undefined){
+                markup = "!--"
+            }
             console.log("ellement",ellement)
             //convert ellement to get the balise in string
-            let markupString = "<"+ellement.tagName.toLowerCase();
+            let markupString = "<"+markup.toLowerCase();
             //map all the attributes with space between them
-            let attributes = Array.from(ellement.attributes).map(function(attr){
-                    if(attr.value!==undefined){
-                        return attr.name+"=\""+attr.value+"\"";
-                    }else {
-                        return attr.name;
-                    }
+            if(ellement.attributes!==undefined) {
+                let attributes = Array.from(ellement.attributes).map(function (attr) {
+                        if (attr.value !== undefined) {
+                            return attr.name + "=\"" + attr.value + "\"";
+                        } else {
+                            return attr.name;
+                        }
 
+                    }
+                ).join(" ");
+                //add the attributes to the markup string
+                if (attributes.length > 0) {
+                    markupString += " " + attributes;
                 }
-            ).join(" ");
-            //add the attributes to the markup string
-            if(attributes.length>0){
-                markupString+= " "+attributes;
             }
-            markupString+=">";
+            if(markup!=="!--"){
+                markupString+=">";
+            }else{
+                markupString+="-->";
+            }
+
 
             annotations.push({
                 "markup":markupString,
@@ -52,9 +62,11 @@ function convertDOMtoJSONWorker(htmlEllement,annotations){
             this.convertDOMtoJSONWorker(ellement, annotations);
             //push the closing balise
             if(ellement.tagName!=="BR") {
-                annotations.push({
-                    "markup": "</" + ellement.tagName.toLowerCase() + ">",
-                });
+                if(markup!=="!--") {
+                    annotations.push({
+                        "markup": "</" + markup.toLowerCase() + ">",
+                    });
+                }
             }
             console.log("end",markup.toLowerCase())
         }else {
