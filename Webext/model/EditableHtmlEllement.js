@@ -285,23 +285,18 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
     recursiveReplace(text){
         var doc= document.createElement('div');
         doc.innerHTML= text;
-        console.log("In the recusive replace",text,this.htmlEllement,doc)
         this.recursiveReplace_worker(this.htmlEllement,doc)
     }
 
     recursiveReplace_worker(original, newObject){
-        console.log("recusive worker",original, newObject)
         if(original === undefined ||   newObject===undefined){
             console.log("recusive worker ERROR",original, newObject)
             return;
         }
         if(original.nodeType  === 3){
-            console.log("recusive replace",original,newObject)
             //   original.nodeValue = newObject.nodeValue
 
             if(original.parentNode!==undefined && newObject.parentNode!==undefined){
-                console.log("Set the html",newObject.parentNode.innerHTML,[newObject.parentNode])
-                console.log(newObject.parentNode.execCommand)
                 //   original.parentNode.textContent = newObject.parentNode.textContent
                 original.textContent = newObject.textContent
             }else{
@@ -310,6 +305,8 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
 
 
             /*
+            WIP : need for website like discord to simulate a user input
+
             if(chrome !=null) {
 
                let deleteEvent = new InputEvent("beforeinput",{
