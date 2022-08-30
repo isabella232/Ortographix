@@ -1,0 +1,54 @@
+{
+  "parametre":{
+    "message": "Paramètre",
+    "description": "Parametre de l'aplication."
+  },
+  "ortographix":{
+    "message": "Ortographix",
+    "description": "Correction ortographique."
+  },
+  "active":{
+    "message": "Activé correcteur",
+    "description": "Correcteur ortographe activé."
+  },
+  "ignores":{
+    "message": "Liste des mots ignorés",
+    "description": "Liste des mots ignorés dans le correcteur ortographe."
+  },
+  "adresse":{
+    "message": "Adresse du Serveur",
+    "description": "Adresse du serveur sur lequel est déployé l'application."
+  },
+  "selection":{
+    "message": "Sélection du moteur de complétion",
+    "description": "Sélection du moteur de complétion automatique à utiliser."
+  },
+  "autre":{
+    "message": "Autre",
+    "description": "Informations diverses."
+  },
+  "davinci":{
+    "message": "Vous avez sélectionné le moteur de correction utilisant l'intelligence artificielle d'open ai \"Davinci\" .",
+    "description": "Clef API"
+  },
+  "api":{
+    "message": "Clef API",
+    "description": "Pour utiliser cette dernière, vous devez disposer d'une clef d'api valide"
+  },
+  "plus":{
+    "message": "Pour en savoir plus ou récupérer votre clef cliqué",
+    "description": "Lien vers la documentation."
+  },
+  "choisi":{
+    "message": "Vous avez choisi d'utiliser le correcteur de complétion automatique par défaut, vérifier que vous avez bien lancé le serveur local  ou que vous êtes connecté à un serveur proposant le module de complétion automatique.",
+    "description": ""
+  },
+  "valid_key": {
+    "message": "   Pour utiliser cette dernière, vous devez disposer <br> d'une clef d'api valide",
+    "description": ""
+  },
+  "get_key": {
+    "message": " Pour en savoir plus ou récupérer votre clef cliqué <a href=\"https://beta.openai.com/account/api-keys\" class=\"text-blue-500\"> ici </a>",
+    "description": ""
+  }
+}

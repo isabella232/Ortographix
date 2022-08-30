@@ -30,7 +30,14 @@ function getCorectionHTTPRequest(element, text){
             let data = JSON.stringify(
                 {annotation: dowArray}
             )
-            url = ip + "/v2/check?data=" + encodeURI(data) + "&language=fr"
+            //if the url length is sort we keep them in sortway
+            if(data.length<10_000){
+                url = ip + "/v2/check?data=" + encodeURI(data) + "&language=fr"
+            }else{
+                //In orther case is only on post data (can have some bug)
+                url = ip + "/v2/check?language=fr"
+            }
+
         }
 
 
@@ -53,6 +60,8 @@ function getCorectionHTTPRequest(element, text){
                     if (needAutoCompletion(element) && prediction) {
                         console.log("we run the auto completion", prediction)
                         getCompletionHTTPRequest(element, element.value)
+                    }else{
+                        console.log("No prediction",needAutoCompletion(element) , prediction)
                     }
                     RequestIsEnd = true;
                 });
@@ -88,47 +97,7 @@ function getCorectionHTTPRequest(element, text){
                     RequestIsEnd = true;
                 });
         }
-        /*
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", url , true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                //xhr.setRequestHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
-                console.log("Boswer = ",browser)
-                if(browser!==undefined){
-                    xhr.setRequestHeader('Access-Control-Allow-Methods', '*');
-                    xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-                    xhr.setRequestHeader('access-control-allow-origin', '*');
-                    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-                }
-
-
-                xhr.onload = function (data) {
-                    console.log("data satus" ,data)
-                    if (xhr.readyState === 4) {
-                        RequestIsEnd = true;
-                        if(xhr.status === 200) {
-                            let data = this.responseText;
-                            console.log("data", JSON.parse(data),element)
-                            correctText(JSON.parse(data),element)
-
-                        }else {
-                            console.log("error", xhr.status,xhr)
-                            RequestIsEnd = true;
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(body));
-
-                xhr.onloadend = function () {
-                    console.log("end")
-                    if(needAutoCompletion(element) && prediction){
-                        console.log("we run the auto completion",prediction)
-                        getCompletionHTTPRequest(element,element.value)
-                    }
-                }
-        */
 
 
     }catch (error) {

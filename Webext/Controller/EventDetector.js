@@ -47,7 +47,7 @@ function checkIfWeRunTextCorrection(){
                     }
                     if(needAutoCompletion(ellement) && prediction){
                         console.log("we run the auto completion",prediction)
-                     //   getCompletionHTTPRequest(ellement,ellement.value)
+                        //   getCompletionHTTPRequest(ellement,ellement.value)
                     }
 
                 }catch (e){
@@ -99,7 +99,7 @@ function ellementEdited(rawellement,e=null){
         if(key.length<=1){
             missingLetter = key
         }
-       let isRemove = removeStartText(ellement,missingLetter)
+        let isRemove = removeStartText(ellement,missingLetter)
         //if we have replamce we not set a correction
         if(isRemove){
             console.log("we have remove")
@@ -234,9 +234,11 @@ function addEventToAllNode(areas) {
         let parent = areas[i].parentElement
         while (parent) {
             //if parent have contenteditable=true
-            if (parent.getAttribute("contenteditable") !== "true") {
-
-                parent.removeEventListener('keydown', atInput)
+            if (parent.getAttribute("contenteditable") != "true") {
+                //console.log("Remove to",parent,parent.getAttribute("contenteditable"),JSON.stringify(parent.attributes),parent.attributes.getNamedItem("contenteditable"))
+                //if(parent.nodeName=="BODY")
+                // console.log("RemoveTo",parent.contentEditable,parent,JSON.stringify(parent.parentElement.innerHTML))
+                // parent.removeEventListener('keydown', atInput)
             } else {
                 console.log("contenteditable", parent)
                 console.log("added vent to parent ")
@@ -247,10 +249,27 @@ function addEventToAllNode(areas) {
             if (areas[i].tagName === "IFRAME") {
                 console.log("iframe", areas[i])
                 //recuriveAddEventToChildren(areas[i])
+                let added_node = areas[i]
+                added_node.addEventListener('keydown', atInput, false);
+                addEventToAllNode(added_node.contentWindow.document.body.getElementsByTagName("*"))
+                recuriveAddEventToChildren(added_node.contentWindow.document.body);
                 //add function when iframe is loaded
                 areas[i].addEventListener('load', function (e) {
-                    console.log("iframe loaded", e.target,e.target.contentWindow.document.body)
-                    addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
+
+                    if(chrome!=null) {
+                        let target =   e.target;
+                        //We use a sleep function to be sure that all ellement in the function is build , this is not the best bet its work
+                        //In chrome on some applcation not all function are redy when we comme in this part . This is the best way (or we need to bin all ellment with event)
+                        setTimeout(function () {
+                            console.log("after sleep ", e,target)
+                            target.contentWindow.addEventListener('keydown', atInput, false);
+                            addEventToAllNode(target.contentWindow.document.body.getElementsByTagName("*"))
+                        }, 100);
+                    }else {
+                        console.log("iframe loaded", e.target, e.target.contentWindow.document.body)
+                        e.target.contentWindow.addEventListener('keydown', atInput, false);
+                        addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
+                    }
                 });
             }
 

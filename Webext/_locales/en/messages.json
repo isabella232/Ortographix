@@ -1,0 +1,54 @@
+{
+"parametre":{
+"message": "Parameter",
+"description": "Application parameter."
+},
+"ortographix":{
+"message": "Ortographix",
+"description": "Orthographic correction."
+},
+"active":{
+"message": "Activated corrector",
+"description": "Orthographic corrector activated."
+},
+"ignores":{
+"message": "List of ignored words",
+"description": "List of words ignored in the spelling checker."
+},
+"address":{
+"message": "Server Address",
+"description": "The address of the server on which the application is deployed."
+},
+"selection":{
+"message": "Selection of the completion engine",
+"description": "Selection of the automatic completion engine to use."
+},
+"autre":{
+"message": "Other",
+"description": "Various information."
+},
+"davinci":{
+"message": "You have selected the correction engine using open ai's \"Davinci\" artificial intelligence.",
+"description": "API Key"
+},
+"api":{
+"message": "API Key",
+"description": "To use the latter, you must have a valid api key"
+},
+"plus":{
+"message": "To learn more or get your key clicked",
+"description": "Link to documentation."
+},
+"choisi":{
+"message": "You have chosen to use the default automatic completion corrector, check that you have started the local server or that you are connected to a server offering the automatic completion module.",
+"description": ""
+},
+  "valid_key": {
+  "message": "You need a API Key to use this fonctionality",
+  "description": ""
+},
+  "get_key": {
+    "message": " To get the key click <a href=\"https://beta.openai.com/account/api-keys\" class=\"text-blue-500\"> here </a>",
+    "description": ""
+  }
+}

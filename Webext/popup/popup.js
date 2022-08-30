@@ -333,7 +333,11 @@ function addWordToList(){
 }
 
 function updateWordList(wordlist){
+    if(lastResult==undefined){
+        lastResult = {}
+    }
     //for each word in the dict
+    lastResult["wordList"] = wordlist
     for(var word in wordlist){
         var li = document.createElement("li");
         li.className = "flex wordlist";
@@ -347,14 +351,14 @@ function updateWordList(wordlist){
             //remove the word from the list
             this.parentNode.remove();
             dataToSend.name = "allWords";
-            dataToSend.value = result.wordList;
+            dataToSend.value = lastResult.wordList;
             if(browser!=undefined) {
 
                 //save the new list
                 browser.storage.sync.set({"wordList": lastResult.wordList});
                 browser.tabs.query({ currentWindow: true}).then(sendMessageFirefox)
             }else{
-                chrome.storage.sync.set({"wordList": result.wordList});
+                chrome.storage.sync.set({"wordList": lastResult.wordList});
                 sendMessageChrome()
             }
         });
@@ -461,8 +465,37 @@ function setLogo(){
 function reportError(error) {
     console.error(`Beastify impossible : ${error}`);
 }
+
+function i18n(){
+    //dict for all the id and text
+    let idToText ={
+        "tabs-normal-tab":"parametre",
+        "title":"ortographix",
+        "activeted":"active",
+        "ignore_word":"ignores",
+        "adresse":"address",
+        "select":"selection",
+        "tabs-other-tab":"autre",
+        "text_open_ia":"davinci",
+        "api_text":"api",
+        "get_key":"get_key",
+        "choose":"choisi",
+        "valid_key":"valid_key"
+    }
+
+    for (let [key,value] of idToText){
+        try{
+            document.getElementById(key).textContent = browser.i18n.getMessage(value);
+        }catch (e){
+            console.log(e)
+        }
+
+    }
+}
+i18n()
 setLogo()
 console.log("in test click")
 //print a debug message in firefox extension console
 console.log("popup.js loaded");
 
+console.log("intenation title : ",title)

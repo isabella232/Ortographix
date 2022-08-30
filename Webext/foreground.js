@@ -38,8 +38,8 @@ var areas = document.querySelectorAll('*');
 
 console.log("areas",areas)
 var RequestIsEnd = true;
-const duration = 1000;
-const minDelayInSeconds = 1;
+const duration = 2000;
+const minDelayInSeconds = 2;
 var lastUpdate = Date.now();
 var previousUpdate = Date.now();
 var activate = true;
@@ -66,8 +66,19 @@ const observer = new MutationObserver(function(mutations_list) {
                 addEventToAllNode(added_node.contentWindow.document.body.getElementsByTagName("*"))
                 recuriveAddEventToChildren(added_node.contentWindow.document.body);
                 added_node.addEventListener('load', function (e) {
-                    console.log("iframe loaded in mutation observer", e.target,e.target.contentWindow.document.body)
-                    addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
+                    let target = e.target
+                    if(chrome!=null) {
+                        //We use a sleep function to be sure that all ellement in the function is build , this is not the best bet its work
+                        setTimeout(function () {
+                            console.log("after sleep ",e)
+                            target .contentWindow.addEventListener('keydown', atInput, false);
+                            addEventToAllNode(target .contentWindow.document.body.getElementsByTagName("*"))
+                        }, 100);
+                    }else {
+                        console.log("iframe loaded in mutation observer", e.target, e.target.contentWindow.document.body, e.target.contentWindow.document.body.getElementsByTagName("*"))
+                        e.target.contentWindow.addEventListener('keydown', atInput, false);
+                        addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
+                    }
                 });
             }
 
@@ -150,6 +161,13 @@ function forLoad(result){
     console.log("result", result)
 }
 
+//replace the text for I18N
+function replaceTextI18N(){
+ let text = {
+     "title":"title"
+ }
+}
+
 /////////////////TEST////////////////////////////////////////////////////////////
 console.log("==== TEST ====")
 let startTest ="j'ai manger des pommes  etd"
@@ -157,9 +175,9 @@ let endTest ="des poires"
 let resss =endOfTextIsTheStartOfNewText(startTest,endTest)
 console.log("resss",resss)
 
- startTest ="aaaab"
- endTest ="aab"
- resss =endOfTextIsTheStartOfNewText(startTest,endTest)
+startTest ="aaaab"
+endTest ="aab"
+resss =endOfTextIsTheStartOfNewText(startTest,endTest)
 console.log("resss",resss)
 
 startTest ="1234"
@@ -176,4 +194,5 @@ startTest ="12345"
 endTest ="1234"
 resss =endOfTextIsTheStartOfNewText(startTest,endTest)
 console.log("resss",resss)
+
 

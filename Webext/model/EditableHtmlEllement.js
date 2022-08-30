@@ -296,12 +296,17 @@ class EditableHtmlEllement extends GeneriqueHTMLEllement{
         if(original.nodeType  === 3){
             //   original.nodeValue = newObject.nodeValue
 
-            if(original.parentNode!==undefined && newObject.parentNode!==undefined){
-                //   original.parentNode.textContent = newObject.parentNode.textContent
-                original.textContent = newObject.textContent
-            }else{
-                original.nodeValue = newObject.nodeValue
-            }
+
+
+                if(original.parentNode!==undefined && newObject.parentNode!==undefined){
+                    //   original.parentNode.textContent = newObject.parentNode.textContent
+                    original.textContent = newObject.textContent
+                }else{
+                    original.nodeValue = newObject.nodeValue
+                }
+
+
+
 
 
             /*
