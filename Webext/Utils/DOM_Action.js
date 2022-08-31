@@ -5,13 +5,13 @@ function convertDOMtoJSON(text) {
     let parser = new DOMParser();
     let fakeText = "<div>"+text+"</div>";
     let doc = parser.parseFromString(text, "text/html");
-    console.log("doc",doc)
+   
     this.convertDOMtoJSONWorker(doc.body, annotations);
-    console.log("annotations",annotations)
+   
     return annotations;
 }
 function convertDOMtoJSONWorker(htmlEllement,annotations){
-    console.log("children",htmlEllement.childNodes)
+   
     let allElements = htmlEllement.childNodes;
     let i = 0;
     while(i<allElements.length){
@@ -22,7 +22,7 @@ function convertDOMtoJSONWorker(htmlEllement,annotations){
             if(markup===undefined){
                 markup = "!--"
             }
-            console.log("ellement",ellement)
+           
             //convert ellement to get the balise in string
             let markupString = "<"+markup.toLowerCase();
             //map all the attributes with space between them
@@ -68,7 +68,7 @@ function convertDOMtoJSONWorker(htmlEllement,annotations){
                     });
                 }
             }
-            console.log("end",markup.toLowerCase())
+           
         }else {
             annotations.push({
                 "text":ellement.data,
@@ -95,13 +95,13 @@ function splitText(text){
             }else if(annotation.markup!==undefined){
                 textArray.push(annotation.markup);
             }else{
-                console.log("error")
+               
             }
         });
-        console.log("textArray",textArray)
+       
         return textArray;
     }else {
-        console.log("no annotations",text.split(" "))
+       
         return text.split(" ");
     }
 

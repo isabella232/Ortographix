@@ -94,10 +94,10 @@ function correctText(data,element) {
 
     //Split the ellemnt.value by the spaces
     wordWithOffet = splitTheEllement(element,phraseLength)
-    console.log("Ellement split : "+wordWithOffet)
+   
     //print word with offset
     for(let i = 0; i<wordWithOffet.length;i++){
-        console.log("-",wordWithOffet[i].word, ":",wordWithOffet[i].offset)
+       
     }
 
 
@@ -113,10 +113,10 @@ function correctText(data,element) {
             delta = applyReplacement3(match,wordWithOffet,element,delta)
         }
 
-        console.log("delta",delta)
+       
     }
 
-    console.log("wordWithOffet", wordWithOffet)
+   
     setCorrection(element,wordWithOffet)
     /*
     //We recopose the text
@@ -137,7 +137,7 @@ function correctText(data,element) {
 
 
      */
-    console.log("new text", oldText,"\n \n \n ===== \n \n ",element.value)
+   
     RequestIsEnd = true;
 
     updateEditedWordStart(ellementDict[cssPath(element)].editedWord)
@@ -152,7 +152,7 @@ function correctText(data,element) {
 function splitTheEllement(element,phraseLength){
     let wordWithOffet =[]
     let textArray = splitText(element.value);
-    console.log("textArray",textArray)
+   
     for (let i = 0; i < textArray.length; i++) {
         let word = textArray[i];
         //if we have new line in word , we split the word by the new line
@@ -197,7 +197,7 @@ function splitTheEllement(element,phraseLength){
                 }
 
             }
-            console.log("Ajout espace apres retoure ligne ",phraseLength)
+           
         }else {
             let wordandOffet = {
                 word: word,
@@ -205,7 +205,7 @@ function splitTheEllement(element,phraseLength){
                 oldWord: word
             }
             wordWithOffet.push(wordandOffet)
-            console.log("Ajout du mot ",word," taille  ",word.length," phraseLength ",phraseLength)
+           
             //word plus space
             let regex = /<.*>/gm;
             //if we have a html balise we not add extra space
@@ -234,7 +234,7 @@ function setCorrection(element,wordWithOffet){
             delta : int => use if they are a difference betwwen all the text
  */
 function applyReplacement3(match,wordWithOffet,element,delta=0){
-    console.log("Replacemnt 3")
+   
     let offset = match.offset;
 
 
@@ -253,7 +253,7 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
     let j =i+1
 
     if((wordWithOffet[i].word in nonEditableWord)){
-        console.log("nonEditableWord cancelle",wordWithOffet[i].word,nonEditableWord,(wordWithOffet[i].word in nonEditableWord))
+       
         return 0;
     }
     //We chack if we need to merge the next item
@@ -265,7 +265,7 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
             //if the word is in the non eidtable word list we stop the process for the match : we not whant to correct a word of the list
 
             if((wordWithOffet[j].word in nonEditableWord)){
-                console.log("cancelle nonEditableWord",wordWithOffet[j].word,nonEditableWord,(wordWithOffet[j].word in nonEditableWord))
+               
                 return 0;
             }
 
@@ -273,7 +273,7 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
             if( wordWithOffet[j].word !== " "){
                 //Merge
                 wordWithOffet[i].word +=" "+wordWithOffet[j].word
-                console.log("Slice ",wordWithOffet[j]," at ",j)
+               
                 wordWithOffet.splice(j,1)
             }else{
                 //we skip the space
@@ -289,7 +289,7 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
     let replacementText = chooseProposition(match,wordWithOffet)
 
     //word = wordWithOffet[i]
-    console.log("word, replacementText",word, replacementText,match)
+   
     //We replace the word
     if(!isPersonalWord(wordWithOffet[i])){
         wordWithOffet[i].word = replacementText
@@ -313,8 +313,8 @@ function applyReplacement3(match,wordWithOffet,element,delta=0){
 @Out string
  */
 function chooseProposition(match,wordWithOffet){
-    console.log("=====")
-    console.log(match)
+   
+   
     let start = match.offset;
     let end = start+match.length
 
@@ -333,7 +333,7 @@ function chooseProposition(match,wordWithOffet){
     if(match.replacements.length===0){
         return word;
     }
-    console.log("combined word",word)
+   
     //2 : We found the close propostion
     let replacements = match.replacements;
     let close = replacements[0].value;
@@ -350,7 +350,7 @@ function chooseProposition(match,wordWithOffet){
             close = replacements[i].value;
         }
     }
-    console.log("Close is ",close)
+   
     return close;
 }
 /*
@@ -361,7 +361,7 @@ Check if the work is in the personal word
 function isPersonalWord(wordWithOffset){
 
     if(nonEditableWord[wordWithOffset.word]!==undefined){
-        console.log("Is personal word",wordWithOffset,nonEditableWord)
+       
         return nonEditableWord[wordWithOffset.word]
     }
     return false
