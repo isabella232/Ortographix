@@ -1,7 +1,7 @@
 {
   "name": "PFE CLERC Max",
   "description": "Extension for my PFE!",
-  "version": "1.11",
+  "version": "1.12",
   "manifest_version": 2,
   "default_locale": "fr_FR",
   "browser_specific_settings":{
