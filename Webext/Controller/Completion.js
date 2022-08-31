@@ -4,23 +4,22 @@ function completion(originalText,newText,ellement){
 
 
  let oldText = originalText.replace(regex, '').replace("<br>").replace("&nbsp;",'').trim();
- console.log("oldText",oldText)
- console.log("newText",newText)
+
  let tmp = newText.replace(oldText,'')
- console.log("tmp",tmp)
+
  let onlyNewModification = tmp.replace(regex, '');
- console.log("onlyNewModification",onlyNewModification)
+
  let replacmentText = "<span class=\"textPropostion\" style=\"color: rgba(187, 196, 190);font-style: oblique 10deg;font-weight: 900;\">"+onlyNewModification+"</span>"
- console.log("replacmentText",replacmentText)
+
  let tempTxt = ellement.value
- console.log("tempTxt",tempTxt)
+
  let newTxt = tempTxt .replace(regex, replacmentText+"$&")
- console.log("newTxt with remplacment",newTxt,ellement.htmlEllement)
+
  ellement.addCompletion(newTxt)
 }
 
 function applycompletion(ellement){
- console.log("Apply completion")
+
  if(ellement===undefined || ellement ===null){
   return;
  }
@@ -36,19 +35,19 @@ function applycompletion(ellement){
   allCompletion[i].parentNode.removeChild(allCompletion[i])
 
  }
- console.log("ellement.htmlEllement",ellement.htmlEllement)
+
  ellement.placeCaretAtEnd(ellement.htmlEllement)
 }
 
 function removeAllCompletion(ellement){
- console.log("Remove completion")
+
  let allCompletion = document.getElementsByClassName("textPropostion")
  //for each completion remove the <span> and </span> and only keep the thexe who add to parent
  for(let i = 0; i < allCompletion.length; i++){
   allCompletion[i].parentNode.removeChild(allCompletion[i])
 
  }
-// console.log("ellement.htmlEllement",ellement.htmlEllement)
+//
  if(ellement.placeCaretAtEnd!==undefined){
   ellement.placeCaretAtEnd(ellement.htmlEllement)
  }
@@ -73,11 +72,11 @@ function removeStartText(ellement,addedLetter){
    return true;
   }
   let commonPart = endOfTextIsTheStartOfNewText(previousChildText,proposalText)
-  console.log("commonPart",commonPart)
+ 
   if(commonPart){
    //remove the common part from the proposalText
    let replacementText = proposalText.substring(commonPart.length)
-   console.log("proposalText",proposalText,proposal)
+  
    //only replace the text not all the html element
    //replace only the first orcurence of the proposalText
    let regex = new RegExp(commonPart)
@@ -89,7 +88,7 @@ function removeStartText(ellement,addedLetter){
    }
    return true
   }else if(addedLetter!==" "){
-   console.log("No commonPart")
+  
    removeAllCompletion(ellement)
   }
 

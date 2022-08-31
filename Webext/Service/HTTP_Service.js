@@ -9,7 +9,7 @@ function getCorectionHTTPRequest(element, text){
     try {
 
         text = text.replace(/\n/g, " ");
-        console.log("Convert text to down", element)
+       
         let body = {
             language: "fr",
             text: text,
@@ -19,7 +19,7 @@ function getCorectionHTTPRequest(element, text){
         let dowArray = this.convertDOMtoJSON(text);
         var url = ip + "/v2/check?text=" + text + "&language=fr"
 
-        console.log("dowArray", dowArray);
+       
         if (dowArray !== undefined && dowArray.length > 0) {
             body = {
                 language: "fr",
@@ -41,11 +41,11 @@ function getCorectionHTTPRequest(element, text){
         }
 
 
-        console.log("body", body);
+       
         RequestIsEnd = false;
-        console.log("url", url);
-        console.log("Before http", JSON.stringify(body))
-        console.log("chome is ",chrome)
+       
+       
+       
         if (chrome !== null && chrome !== undefined) {
             //the only way to make this http call is to use a bagound methode
             //source : https://stackoverflow.com/questions/53405535/how-to-enable-fetch-post-in-chrome-extension-contentscript
@@ -55,13 +55,13 @@ function getCorectionHTTPRequest(element, text){
                     , data: JSON.stringify(body)
                     , url: url
                 }, function (response) {
-                    console.log("Reponse recus",response,element,"|")
+                   
                     correctText(response, element)
                     if (needAutoCompletion(element) && prediction) {
-                        console.log("we run the auto completion", prediction)
+                       
                         getCompletionHTTPRequest(element, element.value)
                     }else{
-                        console.log("No prediction",needAutoCompletion(element) , prediction)
+                       
                     }
                     RequestIsEnd = true;
                 });
@@ -82,17 +82,17 @@ function getCorectionHTTPRequest(element, text){
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("--Reponse : ", response)
+                   
                     correctText(response, element)
                     if (needAutoCompletion(element) && prediction) {
-                        console.log("we run the auto completion", prediction)
+                       
                         getCompletionHTTPRequest(element, element.value)
                     }
                     RequestIsEnd = true;
                 })
                 .catch(error => {
-                    console.log('Error:', error)
-                    console.log(error.stack)
+                   
+                   
 
                     RequestIsEnd = true;
                 });
@@ -101,7 +101,7 @@ function getCorectionHTTPRequest(element, text){
 
 
     }catch (error) {
-        console.log("error",error)
+       
         RequestIsEnd = true;
     }
 
@@ -119,7 +119,7 @@ if (chrome !== null && chrome !== undefined && !chomePostDataUsed) {
             return true;
         }
         if (request.contentScriptQuery == "postData") {
-            console.log("In the bgound of chrome")
+           
             fetch(request.url, {
                 method: 'POST',
                 headers: {
@@ -134,17 +134,17 @@ if (chrome !== null && chrome !== undefined && !chomePostDataUsed) {
             })
                 .then(response => response.json())
                 .then(response => sendResponse(response))
-                .catch(error => console.log('Error:', error));
+                .catch(error => console.log(error))
             return true;
         }
     });
 }
 
 function getCompletionHTTPRequest(element, text){
-    console.log("Get the completion for ",text)
+   
     text = text.trim();
     let url = ip+"/completion?text="+encodeURI(text)
-    console.log("url",url)
+   
     let body  = {
         text: text,
         api_key : gpt_key,
@@ -161,7 +161,7 @@ function getCompletionHTTPRequest(element, text){
                     , data: JSON.stringify(body)
                     , url: url
                 }, function (response) {
-                    console.log("Reponse recus",response,element,"|")
+                   
                     completion(text, response.choices[0].text, element)
                     RequestIsEnd = true;
                 });
@@ -180,12 +180,12 @@ function getCompletionHTTPRequest(element, text){
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("Reponse : ", response)
+                   
                     completion(text, response.choices[0].text, element)
                     RequestIsEnd = true;
                 })
                 .catch(error => {
-                    console.log('Error:', error, error.body, error.stack)
+                   
                     RequestIsEnd = true;
                 });
         }
@@ -205,12 +205,12 @@ function getCompletionHTTPRequest(element, text){
                         if (xhrCompletion.status === 200) {
                             let data = this.responseText;
                             let parseData = JSON.parse(data);
-                            console.log("Completion ", parseData, element)
+                           
                             completion(text,parseData.choices[0].text,element)
 
 
                         } else {
-                            console.log("error in completion", xhrCompletion.status, xhrCompletion)
+                           
                             RequestIsEnd = true;
                         }
                     }
@@ -219,7 +219,7 @@ function getCompletionHTTPRequest(element, text){
 
          */
     }catch (error) {
-        console.log("error",error)
+       
         RequestIsEnd = true;
     }
 

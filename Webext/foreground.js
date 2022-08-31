@@ -62,7 +62,7 @@ const observer = new MutationObserver(function(mutations_list) {
 
             //If added Node is a iframe
             if(added_node.tagName!==undefined&&added_node.tagName.toLowerCase()==="IFRAME".toLowerCase()){
-                console.log("iframe added we add event",added_node)
+               
                 addEventToAllNode(added_node.contentWindow.document.body.getElementsByTagName("*"))
                 recuriveAddEventToChildren(added_node.contentWindow.document.body);
                 added_node.addEventListener('load', function (e) {
@@ -70,12 +70,12 @@ const observer = new MutationObserver(function(mutations_list) {
                     if(chrome!=null) {
                         //We use a sleep function to be sure that all ellement in the function is build , this is not the best bet its work
                         setTimeout(function () {
-                            console.log("after sleep ",e)
+                           
                             target .contentWindow.addEventListener('keydown', atInput, false);
                             addEventToAllNode(target .contentWindow.document.body.getElementsByTagName("*"))
                         }, 100);
                     }else {
-                        console.log("iframe loaded in mutation observer", e.target, e.target.contentWindow.document.body, e.target.contentWindow.document.body.getElementsByTagName("*"))
+                       
                         e.target.contentWindow.addEventListener('keydown', atInput, false);
                         addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
                     }
@@ -97,7 +97,7 @@ var t=setInterval(checkIfWeRunTextCorrection,duration);
 //  Message recive for the communication betwwent the modal and the forground //
 ////////////////////////////////////////////////////////////////////////////////
 if(browser !== undefined) {
-    console.log("browser",browser)
+   
     browser.runtime.onMessage.addListener((message) => {
         processeceMessage(message)
     });
@@ -105,7 +105,7 @@ if(browser !== undefined) {
     // background.js
     chrome.runtime.onMessage.addListener(
         function(message, sender, sendResponse) {
-            console.log("message in chrome",message)
+           
             processeceMessage(message)
         }
     );
@@ -113,7 +113,7 @@ if(browser !== undefined) {
 console.log("lest go 2")
 function processeceMessage(message){
     //get curent url of the page
-    console.log("message in " + window.location.href, message)
+   
     if (message.data.name === "corrector") {
         activate = message.data.isChecked
     }
@@ -125,14 +125,14 @@ function processeceMessage(message){
     }
     if (message.data.name === "allWords") {
         nonEditableWord = message.data.value
-        console.log("nonEditableWord", nonEditableWord)
+       
     }
     if(message.data.name==="openaikey"){
         gpt_key =message.data.value
     }
     if(message.data.name==="corrector_tab"){
         corrector = message.data.value
-        console.log("Corrector",message.data.value)
+       
     }
 }
 /*
@@ -150,15 +150,15 @@ if(browser !== undefined) {
 
 //action use on load , the main idea is to set the default value for the key
 function forLoad(result){
-    console.log("onload", result);
+   
     result["corrector"] !== undefined ? activate = result["corrector"] : activate = activate;
     result["prediction"] !== undefined ? prediction = result["prediction"] : prediction = prediction;
     result["serverip"] !== undefined ? ip = result["serverip"] : ip = "https://api.languagetoolplus.com";
     result["wordList"] !== undefined ? nonEditableWord = result["wordList"] : nonEditableWord = {};
     result["openaikey"] !== undefined ? gpt_key = result["openaikey"] : gpt_key= "";
     result["corrector_tab"] !== undefined ?  corrector = result["corrector_tab"] :  corrector = "other";
-    console.log("prediction", prediction, result["prediction"])
-    console.log("result", result)
+   
+   
 }
 
 //replace the text for I18N

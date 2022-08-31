@@ -12,7 +12,7 @@ function atInput(e) {
     if(RequestIsEnd ){
         ellementEdited(target,e)
     }else{
-        console.log("request is not end")
+       
     }
 
 
@@ -33,32 +33,32 @@ function checkIfWeRunTextCorrection(){
         //for all k,v in ellementDict
         for(var key in ellementDict){
             let   ellement = ellementDict[key].htmlElement;
-            console.log("key",key,"ellement",ellement,ellementDict)
+           
             if(ellementDict[key].previousUpdate !== ellementDict[key].lastUpdate){
                 // ellementDict[ellement].text = ellement.value;
 
                 try{
-                    console.log("we run the correction")
-                    console.log(ellementDict)
+                   
+                   
                     if(activate){
                         getCorectionHTTPRequest(ellement,ellement.value)
                     }else{
-                        console.log("Correction est desactive",activate)
+                       
                     }
                     if(needAutoCompletion(ellement) && prediction){
-                        console.log("we run the auto completion",prediction)
+                       
                         //   getCompletionHTTPRequest(ellement,ellement.value)
                     }
 
                 }catch (e){
-                    console.log("is dead object",e,ellement)
+                   
                 }
 
-                console.log("after get corection")
+               
 
-                console.log("finish the correction")
+               
             }else{
-                console.log("no change",ellementDict[key].previousUpdate,ellementDict[key].lastUpdate)
+               
             }
 
         }
@@ -69,9 +69,9 @@ function checkIfWeRunTextCorrection(){
 //This function is call when we type in a field
 function ellementEdited(rawellement,e=null){
     let key = e ? e.key :"";
-    console.log("event e is",e)
+   
     wordStarSift =[];
-    console.log("rawellement",rawellement)
+   
     //We creae a meta ellement to make the code generic
     let ellement = GeneriqueHTMLEllement.CREATE_CUSTOM_HTML_ELLEMENT(rawellement)
     let css =cssPath(rawellement)
@@ -79,15 +79,15 @@ function ellementEdited(rawellement,e=null){
     //if(!ellementDict.hasOwnProperty(css)&& typeof ellementDict[css].htmlEllement !== "undefined"){
     if(!ellementDict.hasOwnProperty(css)){
         ellementDict[css]=new GlobalEllement(ellement)
-        console.log("we add to ellement",ellementDict)
+       
     }else{
-        console.log("ellm dict ",ellementDict)
+       
     }
 
 
 
     if(checkIfTabIsPress(key,ellement)){
-        console.log("we are in the tab")
+       
         e.preventDefault();
         applycompletion(ellement)
         return;
@@ -102,11 +102,11 @@ function ellementEdited(rawellement,e=null){
         let isRemove = removeStartText(ellement,missingLetter)
         //if we have replamce we not set a correction
         if(isRemove){
-            console.log("we have remove")
+           
             return;
         }
     }catch (e) {
-        console.log(e)
+       
     }
 
     //we check if the word tapped is a edition
@@ -126,8 +126,8 @@ function ellementEdited(rawellement,e=null){
     //&&isAtTheEnd_
     //if last char is a space , tab , new line , ....
     if((lastChar.match(/\s/)||lastChar.match(/\n/) || lastChar.match(/\./) || lastChar.match(/,/)|| lastChar.match(/>/)) && isSpace){
-        console.log("last char is a space")
-        console.log(ellement.value)
+       
+       
 
 
         let prevText = ellementDict[cssPath(ellement)].text;
@@ -147,7 +147,7 @@ function ellementEdited(rawellement,e=null){
 
     }else{
         let prevText = ellementDict[cssPath(ellement)].text;
-        console.log("on ne lance pas la correction ",lastChar," isAtTheEnd_ ",isAtTheEnd_," prev text ",prevText," text ",ellement.value)
+       
     }
 }
 
@@ -173,8 +173,8 @@ wordStarSift : [{
 
 */
 function updateEditedWordStart(editedWordList){
-    console.log("updateEditedWordStart",editedWordList)
-    console.log("wordStarSift",wordStarSift.length)
+   
+   
     //for all object in wordStarSift  we get the start and we look if we find in the editedWordList
     for(let i = 0; i<wordStarSift.length;i++){
         let wordStarSiftObject = wordStarSift[i];
@@ -201,13 +201,13 @@ The invent keydown is used to dected when persone write
  */
 function recuriveAddEventToChildren(added_node){
     if(added_node.getAttribute("contenteditable")==="true"){
-        console.log("content editable and add event",added_node)
+       
         added_node.addEventListener('keydown',atInput , false);
         observer.observe(added_node, { subtree: true, childList: true });
     }
     //If added Node is a iframe
     if(added_node.tagName.toLowerCase()==="IFRAME".toLowerCase()){
-        console.log("iframe add event",added_node)
+       
         added_node.addEventListener('keydown',atInput , false);
         observer.observe(added_node, { subtree: true, childList: true });
         recuriveAddEventToChildren(added_node.contentWindow.document.body)
@@ -224,7 +224,7 @@ We add event to obsver when we write
  */
 //Run the code at start
 function addEventToAllNode(areas) {
-    console.log("addEventToAllNode",areas.length,areas)
+   
 //for each textarea create add a event litenet for typing
     for (var i = 0; i < areas.length; i++) {
         //clear event listener for the input
@@ -237,17 +237,17 @@ function addEventToAllNode(areas) {
             if (parent.getAttribute("contenteditable") != "true") {
                 //console.log("Remove to",parent,parent.getAttribute("contenteditable"),JSON.stringify(parent.attributes),parent.attributes.getNamedItem("contenteditable"))
                 //if(parent.nodeName=="BODY")
-                // console.log("RemoveTo",parent.contentEditable,parent,JSON.stringify(parent.parentElement.innerHTML))
+                //
                 // parent.removeEventListener('keydown', atInput)
             } else {
-                console.log("contenteditable", parent)
-                console.log("added vent to parent ")
+               
+               
                 parent.addEventListener('keydown', atInput, false);
                 observer.observe(parent, {subtree: true, childList: true});
             }
             //if area is iframe
             if (areas[i].tagName === "IFRAME") {
-                console.log("iframe", areas[i])
+               
                 //recuriveAddEventToChildren(areas[i])
                 let added_node = areas[i]
                 added_node.addEventListener('keydown', atInput, false);
@@ -261,12 +261,12 @@ function addEventToAllNode(areas) {
                         //We use a sleep function to be sure that all ellement in the function is build , this is not the best bet its work
                         //In chrome on some applcation not all function are redy when we comme in this part . This is the best way (or we need to bin all ellment with event)
                         setTimeout(function () {
-                            console.log("after sleep ", e,target)
+                           
                             target.contentWindow.addEventListener('keydown', atInput, false);
                             addEventToAllNode(target.contentWindow.document.body.getElementsByTagName("*"))
                         }, 100);
                     }else {
-                        console.log("iframe loaded", e.target, e.target.contentWindow.document.body)
+                       
                         e.target.contentWindow.addEventListener('keydown', atInput, false);
                         addEventToAllNode(e.target.contentWindow.document.body.getElementsByTagName("*"))
                     }
@@ -278,7 +278,7 @@ function addEventToAllNode(areas) {
 //A complete avec les event suivant : https://stackoverflow.com/questions/1948332/detect-all-changes-to-a-input-type-text-immediately-using-jquery
         areas[i].addEventListener('keydown', atInput, false);
         observer.observe(areas[i], {subtree: true, childList: true});
-        // console.log("add event listener", areas[i])
+        //
 
 
     }
@@ -292,14 +292,14 @@ function addEventToAllNode(areas) {
 function findEditedEllement(ellement,key){
 
     let prevEllmentStat = ellementDict[cssPath(ellement)]
-    console.log("findEditedEllement cssPath",cssPath(ellement)," ----- ",ellementDict," --",ellement)
-    console.log("findEditedEllement prevEllmentStat",prevEllmentStat)
+   
+   
     //console.log("findEditedEllement selection start",ellement.selectionStart,EditableHtmlEllement.getCaretPosition(),prevEllmentStat.isAtTheEnd())
     return ;
 
     //let prevEllmentStat = ellementDict[cssPath(ellement)]
-    console.log("cssPath",cssPath(ellement)," ----- ",ellementDict," --",ellement)
-    console.log("prevEllmentStat",prevEllmentStat)
+   
+   
 
     let isAtTheEnd_ = ellement.selectionStart>=ellement.value.trim().length;
 
@@ -307,7 +307,7 @@ function findEditedEllement(ellement,key){
     let isArrow = key.length>1 && key.indexOf("Arrow")>-1;
 
     if(!isAtTheEnd_&&!isArrow){
-        console.log("edit")
+       
         prevEllmentStat.isEdited = true;
 
     }
@@ -317,16 +317,16 @@ function findEditedEllement(ellement,key){
 
     //If the cursor back at the end after a edit
     if( (prevEllmentStat.isEdited&&isAtTheEnd_) || (prevEllmentStat.isEdited && isArrowRight && isArrowRight && charIsSpace)){
-        console.log("fin de l'edit")
+       
         let size = Math.min(Math.abs(ellement.value.length - prevEllmentStat.text.length),2);
         let arrayOfDif = firstDiffIndex(ellement.value,prevEllmentStat.text,size);
-        console.log("modfication extaint ",size,arrayOfDif,ellement.value,prevEllmentStat.text)
+       
         let indexFirstModifcation = arrayOfDif[0]
         let indexLastModifcation = arrayOfDif[1]
         let startOfTheWord = findFirstIndexOfWord(ellement.value,indexFirstModifcation)+1
 
         let allWordEdited = ellement.value.slice(startOfTheWord,indexLastModifcation)
-        console.log("allWordEdited",allWordEdited.trim(),startOfTheWord,ellement.value.charAt(startOfTheWord))
+       
 
         if(allWordEdited.charAt(0) === " "){
             startOfTheWord++;
@@ -344,7 +344,7 @@ function findEditedEllement(ellement,key){
                 delta: ellement.value.length-prevEllmentStat.text.length
             }
         )
-        console.log("wordStarSift",wordStarSift);
+       
 
         prevEllmentStat.text = ellement.value
     }
@@ -360,21 +360,21 @@ function checkIfWeClickOutSide(clickedEllement){
 
 
 function checkIfTabIsPress(key,htmlEllement){
-    console.log("htmlEllement for tab ",htmlEllement,key,typeof key)
+   
     let tmp = htmlEllement.htmlEllement.getElementsByClassName("textPropostion")
-    console.log("htmlEllement for tab tmp",tmp)
+   
     let haveTextProposition = tmp.length>0;
-    console.log("htmlEllement for tab haveTextProposition",haveTextProposition)
+   
 //if key is tab
-    console.log("htmlEllement for tab res = ",key === "Tab" && haveTextProposition)
+   
     return key === "Tab" && haveTextProposition;
 }
 
 document.addEventListener('selectionchange', (event) => {
-    console.log("selection change",document.getSelection(),event);
+   
 });
 
 document.addEventListener('click', function(event) {
-    console.log("click",event.target)
+   
     checkIfWeClickOutSide(event.target)
 });

@@ -26,12 +26,12 @@ try {
 function printAll(){
     if(browser != undefined) {
         browser.storage.sync.get().then((result) => {
-            console.log("print all", result);
+           
         });
     }else{
         chrome.storage.sync.get(null, function(items) {
             var allKeys = Object.keys(items);
-            console.log(allKeys);
+           
         });
     }
 }
@@ -41,15 +41,15 @@ function onLoad(){
     //Need to update this part to facortise
     if(browser != undefined) {
         browser.storage.sync.get().then((result) => {
-            console.log("onload", result);
+           
             lastResult = result
             //for each key in result, set the value of the corresponding input field
             for (var key in result) {
-                console.log("key", key, "value", result[key]);
-                console.log("key is correcot",(key==="corrector_tab"),(document.getElementById(key) !== null))
+               
+               
                 if (document.getElementById(key) !== null) {
                     //if the ellment is a check box
-                    console.log("toto",(document.getElementById(key).type === "checkbox"))
+                   
                     if (document.getElementById(key).type === "checkbox") {
                         document.getElementById(key).checked = result[key];
                     }
@@ -61,7 +61,7 @@ function onLoad(){
                     //If we are in the case of tab , we need to updte all the class for the tab
 
                     //for all the tab we hide them
-                    console.log("ajout des classe pour ",result[key])
+                   
                     let alltab = document.getElementsByClassName("corrector_tab_pan")
                     for(let t of alltab){
                         t.classList.remove("show")
@@ -95,11 +95,11 @@ function onLoad(){
     }else{
         chrome.storage.sync.get(null, function(result) {
             var allKeys = Object.keys(result);
-            console.log(allKeys);
+           
 
 
             for (var key in result) {
-                console.log("key", key, "value", result[key]);
+               
                 if (document.getElementById(key) !== null) {
                     //if the ellment is a check box
                     if (document.getElementById(key).type === "checkbox") {
@@ -112,7 +112,7 @@ function onLoad(){
                     //If we are in the case of tab , we need to updte all the class for the tab
 
                     //for all the tab we hide them
-                    console.log("ajout des classe pour ",result[key])
+                   
                     let alltab = document.getElementsByClassName("corrector_tab_pan")
                     for(let t of alltab){
                         t.classList.remove("show")
@@ -147,13 +147,13 @@ function onLoad(){
 }
 onLoad();
 function editLocalStorage(key,value){
-    console.log("before edit",key,value);
+   
 
     if(browser != undefined) {
         browser.storage.sync.get().then((result) => {
             lastResult = result
             result[key] = value;
-            console.log("result", result)
+           
             browser.storage.sync.set(result);
             printAll()
         });
@@ -162,7 +162,7 @@ function editLocalStorage(key,value){
         chrome.storage.sync.get(null, function(result) {
             lastResult = result
             result[key] = value;
-            console.log("result", result)
+           
             chrome.storage.sync.set(result, function(){
                 //  A data saved callback omg so fancy
             });
@@ -172,10 +172,10 @@ function editLocalStorage(key,value){
 }
 
 document.addEventListener("change", function(e) {
-    console.log("change",e)
+   
     //if the ellment is a input checkbox
     if (e.target.type === "checkbox") {
-        console.log("checkbox changed", e.target.checked);
+       
         // if checkbox is checked
         dataToSend.isChecked =  e.target.checked;
         //name is the id of the checkbox
@@ -189,7 +189,7 @@ document.addEventListener("change", function(e) {
         }
 
     }else if(e.target.type=== "text"){
-        console.log("text changed", e.type);
+       
 
         dataToSend.name = e.target.id;
         dataToSend.value = e.target.value;
@@ -204,7 +204,7 @@ document.addEventListener("change", function(e) {
         }
         printAll()
     }else{
-        console.log("other changed", e.target.value);
+       
     }
 
 
@@ -225,7 +225,7 @@ for(var i=0;i<buttons.length;i++){
 let all_tab = document.getElementsByClassName("chose_completor")
 for(let i =0;i<all_tab.length;i++){
     all_tab[i].addEventListener("click",function (e) {
-        console.log("Click on ",e,e.target.id,JSON.stringify(e.target))
+       
         if(e.target.id==="tabs-other-tab"){
             dataToSend.name = "corrector_tab"
             dataToSend.value = "other"
@@ -276,7 +276,7 @@ function addWord(){
     //Add the word to the list of words
     if(browser!=undefined) {
         browser.storage.sync.get("wordList").then((result) => {
-            console.log("result", result)
+           
             if (result.wordList === undefined) {
                 result.wordList = {};
             }
@@ -306,7 +306,7 @@ function addWordToList(){
     if(browser!=undefined) {
         //get the list of words
         browser.storage.sync.get("wordList").then((result) => {
-            console.log("result", result)
+           
             if (result.wordList === undefined) {
                 result.wordList = {};
             }
@@ -396,22 +396,22 @@ function eventSearchWord(e){
 document.getElementById("addWord").addEventListener("keyup",eventSearchWord);
 
 function sendMessageFirefox(tabs){
-    console.log("send message ${tabs}",tabs,tabs[0],tabs[0].id);
+   
     //find the first tab who the url is not undefined
     var tab = tabs.find(function(tab){
         return tab.url !== undefined;
     });
-    console.log("tab",tab);
+   
     browser.tabs.sendMessage(tab.id, {
         "data":dataToSend
     })
 
     var tabIds = tabs.filter(tab => tab.url !== undefined);
-    console.log("tabIds",tabIds);
+   
 
 //for all tabIds
     tabIds.forEach(tabId => {
-        console.log("tabId",tabId , tabId.url);
+       
         browser.tabs.sendMessage(tabId.id, {
             "data":dataToSend
         })
@@ -420,21 +420,21 @@ function sendMessageFirefox(tabs){
 }
 
 async function sendMessageChrome() {
-    console.log("send message chrome", dataToSend)
+   
 
 
     chrome.tabs.query({   currentWindow: true },function(tabs) {
-        console.log("tab",tabs)
+       
 
         tabs.forEach(tab=>{
-            console.log(tab)
+           
             try{
                 chrome.tabs.sendMessage(tab.id, {"data":dataToSend}, function(response) {
-                    console.log(response.farewell);
+                   
                 })
             }catch (e){
-                console.log(tab)
-                console.log(e)
+               
+               
             }
         })
 
@@ -449,7 +449,7 @@ async function sendMessageChrome() {
 // The body of this function will be executed as a content script inside the
 // current page
     function sendData() {
-        console.log("In send data")
+       
         chrome.runtime.sendMessage({"data": dataToSend});
     }
 
@@ -458,7 +458,7 @@ async function sendMessageChrome() {
 function setLogo(){
     document.getElementById("logo").src =browser.runtime.getURL("icone/menir bleu.png");
     let logopath = browser.runtime.getURL("icone/menir bleu.png");
-    console.log("logo path ",logopath)
+   
 }
 
 
@@ -487,7 +487,7 @@ function i18n(){
         try{
             document.getElementById(key).textContent = browser.i18n.getMessage(value);
         }catch (e){
-            console.log(e)
+           
         }
 
     }

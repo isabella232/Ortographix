@@ -24,7 +24,7 @@ class GeneriqueHTMLEllement{
     }
 
     addCompletion(completion){
-        console.log("addCompletion Generic")
+       
         this.htmlEllement.value = completion
     }
 

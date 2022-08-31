@@ -45,7 +45,7 @@ class InputHtmlEllement extends GeneriqueHTMLEllement{
         return this.selectionStart>=this.value.trim().length;
     }
     addCompletion(completion){
-        console.log("addCompletion",completion);
+       
         this.htmlEllement.value = completion
     }
     get selectionStart(){
